@@ -1,0 +1,34 @@
+
+Main Three types:- 
+1. Creational Design Pattern
+	- Singleton
+	- Builder
+	- Factory
+	- Abstract Factory
+	- Prototype
+2. Structural Design Pattern
+	- Adapter
+	- Composite
+	- Proxy
+	- Facad
+	- Bridge
+	- Decorator
+	- Fly weight
+3. Behavioral Design Pattern
+	- Iterator
+	- Interpreter
+	- Visitor
+	- State
+	- Command 
+	- Strategy
+	- Oberver
+	- Chain Of Responsibilities
+	- Mediator
+	- Template Method
+
+
+
+
+
+
+   
