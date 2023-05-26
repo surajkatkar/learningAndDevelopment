@@ -27,8 +27,46 @@ Main Three types:-
 	- Template Method
 
 
+* Factory Design Pattern :
+	- In Factory pattern, we create object without exposing the creation logic to the client and 
+	  refer to newly created object using a common interface.
+	- Just linke SessionFactory in Hibernate, it will provide session on demand
+	- if we are dealing with multiple objects, according to user requiredment he will choose one of them, 
+	  that time we can use this Factory Design Pattern
 
+* Adapter Design Pattern
+	- Adapter design pattern is one of the structural design pattern and its used so that 
+	  two unrelated interfaces can work together. The object that joins these unrelated interface is called an Adapter.
+	- Example to understand this concept is Mobile charger adapter, in recent days every mobile company has their own
+	  charging socket to charge the mobiles, so to connect one charger to another mobile adapter is designed , so we can 
+	  charge the phone by using different charger.
+	  
 
+* Composit Design Pattern
+	- When we need to create a structure in a way that the objects in the structure has to be treated the same way, 
+	  we can apply composite design pattern.
+	- The intent of a composite is to “compose” objects into tree structures to represent part-whole hierarchies. 
+	  It allows you to have a tree structure and ask each node in the tree structure to perform a task.
+	- Example
+		Computer(Composit Object) -> Cabinate(Composit Object)
+								  -> PeripheralDevices(Composit Object)
+								  -> MotherBoard(Composit Object)
+		Cabinate (Composit Object)-> MotherBoard(Composit Object) & HardDrive(Leaf Object)
+		MotherBoard(Composit Object)-> Ram (Leaf Object) & cpu(Leaf Object)
+		PeripheralDevices(Composit Object) -> Mouse(Leaf Object) & KeyBoard(Leaf Object)
+		
+		All classes implements the Component Interface & that has one abstract method to showPrice(), they all implemented 
+		that method.
 
-
-   
+* Prototype Design Pattern
+	- Prototype Pattern says that cloning of an existing object instead of creating new one and
+	  can also be customized as per the requirement.
+	- Usage of Prototype Pattern
+		When the classes are instantiated at runtime.
+		When the cost of creating an object is expensive or complicated.
+		When you want to keep the number of classes in an application minimum.
+		When the client application needs to be unaware of object creation and representation.
+		
+* Observer Design Pattern
+	- Observer is a behavioral design pattern. It specifies communication between objects: observable and observers. 
+	  An observable is an object which notifies observers about the changes in its state.
