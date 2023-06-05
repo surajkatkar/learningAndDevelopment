@@ -1,0 +1,402 @@
+1) Creational Desing Pattern
+
+* Builder Design Pattern
+
+	The Builder design pattern is a creational design pattern that provides a way to construct complex objects 
+	step by step. It separates the construction of an object from its representation, allowing the same 
+	construction process to create different representations. The Builder pattern is useful when you need to 
+	create objects with many optional parameters or configurations.
+
+	Here's a simplified example of implementing the Builder pattern in Java:
+
+		public class Product {
+			private String name;
+			private int price;
+			private String description;
+
+			private Product(Builder builder) {
+				this.name = builder.name;
+				this.price = builder.price;
+				this.description = builder.description;
+			}
+
+			public String getName() {
+				return name;
+			}
+
+			public int getPrice() {
+				return price;
+			}
+
+			public String getDescription() {
+				return description;
+			}
+
+			public static class Builder {
+				private String name;
+				private int price;
+				private String description;
+
+				public Builder setName(String name) {
+					this.name = name;
+					return this;
+				}
+
+				public Builder setPrice(int price) {
+					this.price = price;
+					return this;
+				}
+
+				public Builder setDescription(String description) {
+					this.description = description;
+					return this;
+				}
+
+				public Product build() {
+					return new Product(this);
+				}
+			}
+		}
+	In the above example, we have a Product class with three properties: name, price, and description. 
+	The Product class has a private constructor that takes a Builder object and assigns the values from the 
+	builder to the product.
+
+	The Product class also contains a nested static class called Builder. The builder class provides methods 
+	to set the optional parameters of the Product object and returns the builder instance itself to enable 
+	method chaining. The build() method creates a new Product instance by passing itself (the builder) 
+	to the Product constructor.
+
+	Here's an example of how you can use the Builder pattern to create a Product object:
+		public class Main {
+			public static void main(String[] args) {
+				Product product = new Product.Builder()
+						.setName("Example Product")
+						.setPrice(100)
+						.setDescription("This is an example product")
+						.build();
+
+				System.out.println("Product: " + product.getName());
+				System.out.println("Price: " + product.getPrice());
+				System.out.println("Description: " + product.getDescription());
+			}
+		}
+	In this example, we use the builder to set the optional parameters of the Product object and call the build() 
+	method to create the Product instance. The builder pattern provides a more readable and flexible way 
+	to construct objects with many optional parameters.
+
+* Factory Design Pattern :
+	- In Factory pattern, we create object without exposing the creation logic to the client and 
+	  refer to newly created object using a common interface.
+	- Just linke SessionFactory in Hibernate, it will provide session on demand
+	- if we are dealing with multiple objects, according to user requiredment he will choose one of them, 
+	  that time we can use this Factory Design Pattern
+	  
+* Abstract Factory Design Pattern
+	The Abstract Factory design pattern provides an interface for creating families of related or dependent
+	objects without specifying their concrete classes. It encapsulates the creation logic for the objects, 
+	allowing the client code to work with abstract interfaces rather than concrete implementations. This promotes
+	loose coupling and enhances flexibility in the codebase.
+	  
+* Prototype Design Pattern
+	- Prototype Pattern says that cloning of an existing object instead of creating new one and
+	  can also be customized as per the requirement.
+	- Usage of Prototype Pattern
+		When the classes are instantiated at runtime.
+		When the cost of creating an object is expensive or complicated.
+		When you want to keep the number of classes in an application minimum.
+		When the client application needs to be unaware of object creation and representation.
+		
+
+* Singleton Design Pattern
+
+	Singleton pattern restricts the instantiation of a class and ensures that only one instance of the class 
+		exists in the Java Virtual Machine. 
+	The singleton class must provide a global access point to get the instance of the class.
+	Singleton pattern is used for logging, drivers objects, caching, and thread pool.
+	Singleton design pattern is also used in other design patterns like Abstract Factory, Builder, Prototype, Facade, etc.
+	Singleton design pattern is used in core Java classes also (for example, java.lang.Runtime, java.awt.Desktop).
+	Java Singleton Pattern Implementation To implement a singleton pattern, we have different approaches, but 
+		all of them have the following common concepts.
+
+	- Private constructor to restrict instantiation of the class from other classes.
+	- Private static variable of the same class that is the only instance of the class.
+	- Public static method that returns the instance of the class, this is the global access point for the
+		outer world to get the instance of the singleton class.
+	- In further sections, we will learn different approaches to singleton pattern implementation and design concerns
+		with the implementation.
+
+1. Eager initialization
+	In eager initialization, the instance of the singleton class is created at the time of class loading. The drawback
+	to eager initialization is that the method is created even though the client application might not be using it.
+	Here is the implementation of the static initialization singleton class:
+
+		package com.journaldev.singleton;
+
+		public class EagerInitializedSingleton {
+
+			private static final EagerInitializedSingleton instance = new EagerInitializedSingleton();
+
+			// private constructor to avoid client applications using the constructor
+			private EagerInitializedSingleton(){}
+
+			public static EagerInitializedSingleton getInstance() {
+				return instance;
+			}
+		}
+		
+	If your singleton class is not using a lot of resources, this is the approach to use. But in most of the scenarios,
+	singleton classes are created for resources such as File System, Database connections, etc. We should avoid the 
+	instantiation unless the client calls the getInstance method. Also, this method doesn’t provide any options for exception handling.
+
+2. Static block initialization
+	Static block initialization implementation is similar to eager initialization, except that instance of the class
+	is created in the static block that provides the option for exception handling.
+
+		package com.journaldev.singleton;
+
+		public class StaticBlockSingleton {
+
+			private static StaticBlockSingleton instance;
+
+			private StaticBlockSingleton(){}
+
+			// static block initialization for exception handling
+			static {
+				try {
+					instance = new StaticBlockSingleton();
+				} catch (Exception e) {
+					throw new RuntimeException("Exception occurred in creating singleton instance");
+				}
+			}
+
+			public static StaticBlockSingleton getInstance() {
+				return instance;
+			}
+		}
+		
+	Both eager initialization and static block initialization create the instance even before it’s being used and
+	that is not the best practice to use.
+
+3. Lazy Initialization
+	Lazy initialization method to implement the singleton pattern creates the instance in the global access method.
+	Here is the sample code for creating the singleton class with this approach:
+
+		package com.journaldev.singleton;
+
+		public class LazyInitializedSingleton {
+
+			private static LazyInitializedSingleton instance;
+
+			private LazyInitializedSingleton(){}
+
+			public static LazyInitializedSingleton getInstance() {
+				if (instance == null) {
+					instance = new LazyInitializedSingleton();
+				}
+				return instance;
+			}
+		}
+	The preceding implementation works fine in the case of the single-threaded environment, but when it comes to 
+	multi-threaded systems, it can cause issues if multiple threads are inside the if condition at the same time. 
+	It will destroy the singleton pattern and both threads will get different instances of the singleton class. 
+	In the next section, we will see different ways to create a thread-safe singleton class.
+
+4. Thread Safe Singleton
+	A simple way to create a thread-safe singleton class is to make the global access method synchronized so that
+	only one thread can execute this method at a time. Here is a general implementation of this approach:
+
+		package com.journaldev.singleton;
+
+		public class ThreadSafeSingleton {
+
+			private static ThreadSafeSingleton instance;
+
+			private ThreadSafeSingleton(){}
+
+			public static synchronized ThreadSafeSingleton getInstance() {
+				if (instance == null) {
+					instance = new ThreadSafeSingleton();
+				}
+				return instance;
+			}
+
+		}
+		
+	The preceding implementation works fine and provides thread-safety, but it reduces the performance because 
+	of the cost associated with the synchronized method, although we need it only for the first few threads that
+	might create separate instances. To avoid this extra overhead every time, double-checked locking principle is used. 
+	In this approach, the synchronized block is used inside the if condition with an additional check to ensure that 
+	only one instance of a singleton class is created. The following code snippet provides the double-checked locking implementation:
+
+		public static ThreadSafeSingleton getInstanceUsingDoubleLocking() {
+			if (instance == null) {
+				synchronized (ThreadSafeSingleton.class) {
+					if (instance == null) {
+						instance = new ThreadSafeSingleton();
+					}
+				}
+			}
+			return instance;
+		}
+	Continue your learning with Thread Safe Singleton Class.
+
+5. Bill Pugh Singleton Implementation
+	Prior to Java 5, the Java memory model had a lot of issues, and the previous approaches used to fail in certain 
+	scenarios where too many threads tried to get the instance of the singleton class simultaneously. So Bill Pugh
+	came up with a different approach to create the singleton class using an inner static helper class. Here is an example
+	of the Bill Pugh Singleton implementation:
+
+		package com.journaldev.singleton;
+
+		public class BillPughSingleton {
+
+			private BillPughSingleton(){}
+
+			private static class SingletonHelper {
+				private static final BillPughSingleton INSTANCE = new BillPughSingleton();
+			}
+
+			public static BillPughSingleton getInstance() {
+				return SingletonHelper.INSTANCE;
+			}
+		}
+	Notice the private inner static class that contains the instance of the singleton class. When the singleton class
+	is loaded, SingletonHelper class is not loaded into memory and only when someone calls the getInstance() method, 
+	this class gets loaded and creates the singleton class instance. This is the most widely used approach for 
+	the singleton class as it doesn’t require synchronization.
+
+6. Using Reflection to destroy Singleton Pattern
+	Reflection can be used to destroy all the previous singleton implementation approaches. Here is an example class:
+
+		package com.journaldev.singleton;
+
+		import java.lang.reflect.Constructor;
+
+		public class ReflectionSingletonTest {
+
+			public static void main(String[] args) {
+				EagerInitializedSingleton instanceOne = EagerInitializedSingleton.getInstance();
+				EagerInitializedSingleton instanceTwo = null;
+				try {
+					Constructor[] constructors = EagerInitializedSingleton.class.getDeclaredConstructors();
+					for (Constructor constructor : constructors) {
+						// This code will destroy the singleton pattern
+						constructor.setAccessible(true);
+						instanceTwo = (EagerInitializedSingleton) constructor.newInstance();
+						break;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				System.out.println(instanceOne.hashCode());
+				System.out.println(instanceTwo.hashCode());
+			}
+
+		}
+	When you run the preceding test class, you will notice that hashCode of both instances is not the same 
+	which destroys the singleton pattern. Reflection is very powerful and used in a lot of frameworks like 
+	Spring and Hibernate. Continue your learning with Java Reflection Tutorial.
+
+7. Enum Singleton
+	To overcome this situation with Reflection, Joshua Bloch suggests the use of enum to implement the singleton design pattern as Java ensures that any enum value is instantiated only once in a Java program. Since Java Enum values are globally accessible, so is the singleton. The drawback is that the enum type is somewhat inflexible (for example, it does not allow lazy initialization).
+
+		package com.journaldev.singleton;
+
+		public enum EnumSingleton {
+
+			INSTANCE;
+
+			public static void doSomething() {
+				// do something
+			}
+		}
+8. Serialization and Singleton
+	Sometimes in distributed systems, we need to implement Serializable interface in the singleton class 
+	so that we can store its state in the file system and retrieve it at a later point in time. Here is a small 
+	singleton class that implements Serializable interface also:
+
+		package com.journaldev.singleton;
+
+		import java.io.Serializable;
+
+		public class SerializedSingleton implements Serializable {
+
+			private static final long serialVersionUID = -7604766932017737115L;
+
+			private SerializedSingleton(){}
+
+			private static class SingletonHelper {
+				private static final SerializedSingleton instance = new SerializedSingleton();
+			}
+
+			public static SerializedSingleton getInstance() {
+				return SingletonHelper.instance;
+			}
+
+		}
+	The problem with serialized singleton class is that whenever we deserialize it, it will create a new instance of the class. Here is an example:
+
+		package com.journaldev.singleton;
+
+		import java.io.FileInputStream;
+		import java.io.FileNotFoundException;
+		import java.io.FileOutputStream;
+		import java.io.IOException;
+		import java.io.ObjectInput;
+		import java.io.ObjectInputStream;
+		import java.io.ObjectOutput;
+		import java.io.ObjectOutputStream;
+
+		public class SingletonSerializedTest {
+
+			public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+				SerializedSingleton instanceOne = SerializedSingleton.getInstance();
+				ObjectOutput out = new ObjectOutputStream(new FileOutputStream(
+						"filename.ser"));
+				out.writeObject(instanceOne);
+				out.close();
+
+				// deserialize from file to object
+				ObjectInput in = new ObjectInputStream(new FileInputStream(
+						"filename.ser"));
+				SerializedSingleton instanceTwo = (SerializedSingleton) in.readObject();
+				in.close();
+
+				System.out.println("instanceOne hashCode="+instanceOne.hashCode());
+				System.out.println("instanceTwo hashCode="+instanceTwo.hashCode());
+
+			}
+
+		}
+		That code produces this output:
+
+		Output
+		instanceOne hashCode=2011117821
+		instanceTwo hashCode=109647522
+	So it destroys the singleton pattern. To overcome this scenario, all we need to do is provide the 
+	implementation of readResolve() method.
+
+	protected Object readResolve() {
+		return getInstance();
+	}
+	After this, you will notice that hashCode of both instances is the same in the test program.
+	
+In general, the Singleton pattern is designed to ensure that there is only one instance of a class, and breaking
+	the Singleton instance goes against its intended design. However, there are a few ways in which the Singleton 
+	instance can potentially be broken:
+
+	Reflection: Using reflection, it is possible to access the private constructor of a Singleton class and create
+	multiple instances. This can be done by calling setAccessible(true) on the constructor and then invoking it. 
+	To prevent this, you can modify the Singleton class to throw an exception if the constructor is called after 
+	the instance has been created.
+
+	Serialization: When a Singleton class is serialized and then deserialized, it creates a new instance of the class.
+	To prevent this, you can implement the readResolve() method in the Singleton class and return the existing 
+	instance, ensuring that only one instance is used during deserialization.
+
+	Cloning: If a Singleton class implements the Cloneable interface and the clone() method is called on it, it 
+	creates a new instance. To prevent cloning, you can override the clone() method in the Singleton class and throw 
+	an exception or return the existing instance.
+
+	These methods require specific circumstances or deliberate actions to break the Singleton pattern. In most cases,
+	it's recommended to follow best practices and avoid intentionally breaking the Singleton instance.
